@@ -10,6 +10,7 @@
       ./hardware-configuration.nix
       #./Hyprland.nix
       ./Gnome.nix
+      #./win-vm.nix
     ];
 
   # Bootloader.
@@ -179,7 +180,6 @@
   # Enables support for 32bit libs that steam uses
   hardware.graphics = {
     enable = true;
-    # driSupport = true;
     enable32Bit = true;
     # added for gpu-screen-recorder-gtk
     extraPackages = with pkgs; [
@@ -201,43 +201,48 @@
 
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = ["nvidia"];
+  
   hardware.nvidia = {
-
-    # Modesetting is required.
+    # Modesetting is required for all Nvidia GPU generations
     modesetting.enable = true;
 
-    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-    powerManagement.enable = false;
-    # Fine-grained power management. Turns off GPU when not in use.
-    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-    powerManagement.finegrained = false;
+    # Nvidia power management. Re-enabled for better support
+    powerManagement = {
+      enable = true;
+      finegrained = true;
+    };
 
-    # Use the NVidia open source kernel module (not to be confused with the
-    # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of 
-    # supported GPUs is at: 
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
-    # Only available from driver 515.43.04+
-    # Currently alpha-quality/buggy, so false is currently the recommended setting.
+    # Use the proprietary driver
     open = false;
 
-    # Enable the Nvidia settings menu,
-	  # accessible via `nvidia-settings`.
+    # Enable the Nvidia settings menu
     nvidiaSettings = true;
 
-    # Optionally, you may need to select the appropriate driver version for your specific GPU.
+    # Use the stable driver
     package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+    # Prime configuration
+    prime = {
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
+      # These are more reliable default values for laptops
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+    };
   };
 
-	hardware.nvidia.prime = {
-		offload = {
-			enable = true;
-			enableOffloadCmd = true;
-		};
-		# Make sure to use the correct Bus ID values for your system!
-		intelBusId = "PCI:0:2:0";
-		nvidiaBusId = "PCI:14:0:0";
-	};
+  boot.kernelParams = [
+    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"  # Helps with suspend/resume
+    "nvidia-drm.modeset=1"  # Required for most Wayland compositors
+    "nvidia.NVreg_RegistryDwords=\"PowerMizerEnable=0x1 PerfLevelSrc=0x2222 PowerMizerLevel=0x3 PowerMizerDefault=0x3 TCCSupported=0x0\""  # Better power management
+  ];
+
+  # Re-enable suspend, hibernate, and resume services
+  systemd.services.nvidia-suspend.enable = true;
+  systemd.services.nvidia-hibernate.enable = true;
+  systemd.services.nvidia-resume.enable = true;
 
   # Add ~/.local/bin/ to $PATH
   environment.localBinInPath = true;
