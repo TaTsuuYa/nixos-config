@@ -1,55 +1,55 @@
 { config, pkgs, ... }:
 
 {
-	environment.systemPackages = with pkgs; [
-		# bar
-		(waybar.overrideAttrs (oldAttrs: {
-			mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-		}))
+  environment.systemPackages = with pkgs; [
+    # bar
+    (waybar.overrideAttrs (oldAttrs: {
+      mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+    }))
 
-		# widgets
-		eww-wayland
-		
-		# wallpaper deamon
-		swww
-		
-		# color manager
-		pywal
+    # widgets
+    eww-wayland
 
-		# terminal
-		kitty
+    # wallpaper deamon
+    swww
 
-		# app launcher
-		rofi-wayland
-		
-		# notifications
-		dunst
-		libnotify
+    # color manager
+    pywal
 
-		# networkmanager
-		networkmanagerapplet
+    # terminal
+    kitty
 
-		#scrennshot
-		grimblast
+    # app launcher
+    rofi-wayland
 
-		# lock screen
-		swaylock
+    # notifications
+    dunst
+    libnotify
 
-		#file explorer
-		libsForQt5.dolphin
-	];
+    # networkmanager
+    networkmanagerapplet
 
-#fix swaylock
-security.pam.services.swaylock = {
-	text = ''
-		auth include login
-	'';
-};
+    #scrennshot
+    grimblast
 
-fonts.packages = with pkgs; [
-	font-awesome
-	nerdfonts
-];
+    # lock screen
+    swaylock
+
+    #file explorer
+    libsForQt5.dolphin
+  ];
+
+  #fix swaylock
+  security.pam.services.swaylock = {
+    text = ''
+      		auth include login
+      	'';
+  };
+
+  fonts.packages = with pkgs; [
+    font-awesome
+    nerdfonts
+  ];
 
   programs.hyprland = {
     enable = true;

@@ -5,13 +5,13 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      #./Hyprland.nix
-      ./Gnome.nix
-      #./win-vm.nix
-    ];
+
+  # Enable Flakes and other experimental features
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    keep-outputs = true;
+    keep-derivations = true;
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -77,51 +77,18 @@
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [
       firefox
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # Required system packages (removed user packages that are now in home-manager)
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     steam
     steam-run
-    neofetch
-    vlc
-    discord
-    google-chrome
-    python3
-    git
-    wget
-    vscode
-    #vscode-extensions.ms-dotnettools.vscodeintellicode-csharp
-    #vscode-extensions.ms-dotnettools.vscode-dotnet-runtime
-    #vscode-extensions.ms-dotnettools.csharp
-    #vscode-extensions.ms-dotnettools.csdevkit
-    #dotnet-sdk_8
-    #dotnet-runtime_8
-    #dotnetCorePackages.sdk_8_0_2xx
-    #dotnetCorePackages.dotnet_8.sdk
-    #omnisharp-roslyn
-    gnome-tweaks
-    toybox
-    ripgrep
-    xclip
-    qbittorrent
-    blender
-    megasync
-    bottles
-    heroic
-    obs-studio
-    nixd
-    vlc
-    bat
-    tree
-    #ollama
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -157,7 +124,7 @@
     "steam-original"
     "steam-run"
     "discord"
-    
+
     # ollama
     "cuda_cccl"
     "cuda_cudart"
@@ -177,11 +144,10 @@
     # dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
-  # Enables support for 32bit libs that steam uses
+  # Hardware acceleration and 32-bit support
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
-    # added for gpu-screen-recorder-gtk
     extraPackages = with pkgs; [
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
       vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
@@ -189,7 +155,7 @@
       libvdpau-va-gl
     ];
   };
-  
+
   # for piper
   services.ratbagd.enable = true;
 
@@ -200,8 +166,9 @@
   #'';
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
-  
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  # NVIDIA Configuration
   hardware.nvidia = {
     # Modesetting is required for all Nvidia GPU generations
     modesetting.enable = true;
@@ -233,10 +200,25 @@
     };
   };
 
+  # Ensure NVIDIA settings are applied in the correct order
+  system.activationScripts.nvidia-settings = {
+    text = ''
+      # Set up NVIDIA kernel parameters
+      if [ -f /proc/sys/nvidia/registry ] ; then 
+        echo "PowerMizerEnable=0x1" > /proc/sys/nvidia/registry
+        echo "PerfLevelSrc=0x2222" > /proc/sys/nvidia/registry
+        echo "PowerMizerLevel=0x3" > /proc/sys/nvidia/registry
+        echo "PowerMizerDefault=0x3" > /proc/sys/nvidia/registry
+        echo "TCCSupported=0x0" > /proc/sys/nvidia/registry
+      fi
+    '';
+    deps = [];
+  };
+
+  # NVIDIA-specific kernel parameters
   boot.kernelParams = [
-    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"  # Helps with suspend/resume
-    "nvidia-drm.modeset=1"  # Required for most Wayland compositors
-    "nvidia.NVreg_RegistryDwords=\"PowerMizerEnable=0x1 PerfLevelSrc=0x2222 PowerMizerLevel=0x3 PowerMizerDefault=0x3 TCCSupported=0x0\""  # Better power management
+    "nvidia-drm.modeset=1"
+    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
   ];
 
   # Re-enable suspend, hibernate, and resume services
@@ -255,10 +237,6 @@
   # for dual-shock 4
   hardware.bluetooth.enable = true;
   hardware.bluetooth.package = pkgs.bluez;
-
-  # to keep `source` when deleteing older generations
-  nix.settings.keep-outputs = true;
-  nix.settings.keep-derivations = true;
 
   # for docker
   virtualisation.docker.enable = true;
@@ -299,7 +277,7 @@
   };
 
   # ollama
-  services.ollama = { enable = true; acceleration="cuda"; };
+  services.ollama = { enable = true; acceleration = "cuda"; };
 
   # Fix game latency
   # networking.interfaces.eno2.tc.qdisc = "fq_codel";
@@ -320,13 +298,12 @@
   #  DOTNET_ROOT = "/nix/store/857lb4p516avw491s8i5pzglwrki8n36-dotnet-sdk-8.0.300";
   #};
 
-
   # subsplease notif service 
   # systemd.services.subspleasenotif = {
   #   description = "SubspleaseNotif";
   #   after = [ "network.target" ];
   #   wantedBy = [ "multi-user.target" ];
-    
+
   #   serviceConfig = {
   #     ExecStart = "/usr/bin/env bash -c /home/tatsuuya/.local/bin/subsplease-notif";
   #     Restart = "on-failure";
@@ -339,4 +316,14 @@
   #     ];
   #   };
   # };
+
+  # Font configuration
+  fonts = {
+    fontDir.enable = true;
+    enableDefaultPackages = true;
+    packages = with pkgs; [
+      font-awesome
+      nerdfonts
+    ];
+  };
 }

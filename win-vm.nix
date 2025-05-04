@@ -1,4 +1,4 @@
-{config, pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Enable IOMMU
@@ -37,8 +37,8 @@
   # Network configuration
   networking = {
     firewall = {
-      allowedTCPPorts = [ 5900 5901 ];  # For VNC
-      checkReversePath = "loose";  # For VM networking
+      allowedTCPPorts = [ 5900 5901 ]; # For VNC
+      checkReversePath = "loose"; # For VM networking
     };
     nat = {
       enable = true;
