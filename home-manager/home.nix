@@ -12,7 +12,7 @@
   programs.git = {
     enable = true;
     userName = "TaTsuuYa";
-    userEmail = "taoufik02yahyaoui@gmail.com"; # Replace with your email
+    userEmail = "taoufik02yahyaoui@gmail.com";
     extraConfig = {
       init.defaultBranch = "main";
     };
@@ -23,17 +23,21 @@
     enable = true;
     shellAliases = {
       c = "clear";
+      # Nix
       nx-conf = "code /etc/nixos/configuration.nix";
-      nx-rb-switch = "sudo nixos-rebuild switch";
-      nx-rb-switch-up = "sudo nixos-rebuild switch --upgrade";
-      nx-rb-boot = "sudo nixos-rebuild boot";
-      nx-rb-boot-up = "sudo nixos-rebuild boot --upgrade";
-      ginit = "git init";
-      gadd = "git add";
-      gcomm = "git commit";
+      nx-rb-switch = "sudo nixos-rebuild switch --flake ~/nixos-config";
+      nx-rb-switch-up = "nix flake update && nx-rb-switch";
+      nx-rb-boot = "sudo nixos-rebuild boot --flake ~/nixos-config";
+      nx-rb-boot-up = "nix flake update && nx-rb-boot";
+      # Git
+      gi = "git init";
+      ga = "git add";
+      gc = "git commit";
       gpll = "git pull";
       gpsh = "git push";
       gs = "git status";
+      gl = "git log";
+      gd = "git diff";
     };
   };
 

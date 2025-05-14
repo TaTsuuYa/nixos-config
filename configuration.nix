@@ -239,7 +239,7 @@
   hardware.bluetooth.package = pkgs.bluez;
 
   # for docker
-  virtualisation.docker.enable = true;
+  # virtualisation.docker.enable = true;
 
   # ASUS stuff
   services.supergfxd.enable = true;
