@@ -24,7 +24,7 @@
     shellAliases = {
       c = "clear";
       # Nix
-      nx-conf = "code /etc/nixos/configuration.nix";
+      nx-conf = "code ~/nixos-config";
       nx-rb-switch = "sudo nixos-rebuild switch --flake ~/nixos-config";
       nx-rb-switch-up = "nix flake update && nx-rb-switch";
       nx-rb-boot = "sudo nixos-rebuild boot --flake ~/nixos-config";
