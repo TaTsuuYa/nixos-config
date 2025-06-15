@@ -59,12 +59,13 @@
     qbittorrent
     blender
     megasync
-    bottles
     heroic
     obs-studio
     nixd
     bat
     tree
+    bottles
+    sambaFull
   ];
 
   # State version
