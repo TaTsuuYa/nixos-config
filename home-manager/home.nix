@@ -41,6 +41,18 @@
     };
   };
 
+  # KDEConnect for gnome
+  programs.gnome-shell = {
+    enable = true;
+    extensions = with pkgs.gnomeExtensions; [
+      { package = gsconnect; }
+      { package = blur-my-shell; }
+      { package = appindicator; }
+      { package = vitals; }
+      { package = clipboard-history; }
+    ];
+  }; 
+
   # Packages to install for your user
   home.packages = with pkgs; [
     firefox

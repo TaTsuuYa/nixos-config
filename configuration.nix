@@ -239,7 +239,7 @@
   hardware.bluetooth.package = pkgs.bluez;
 
   # for docker
-  # virtualisation.docker.enable = true;
+  virtualisation.docker.enable = true;
 
   # ASUS stuff
   services.supergfxd.enable = true;
@@ -292,6 +292,12 @@
       CREATE ROLE tatsuuya WITH LOGIN SUPERUSER PASSWORD 'yourpassword';
       CREATE DATABASE mydb OWNER tatsuuya;
     '';
+  };
+
+  # KDEConnect networking for Gnome
+  networking.firewall = rec {
+    allowedTCPPortRanges = [ { from = 1714; to = 1764; } ];
+    allowedUDPPortRanges = allowedTCPPortRanges;
   };
 
   #environment.variables = {
