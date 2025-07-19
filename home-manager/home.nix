@@ -41,7 +41,7 @@
     };
   };
 
-  # KDEConnect for gnome
+  # Gnome extensions
   programs.gnome-shell = {
     enable = true;
     extensions = with pkgs.gnomeExtensions; [
@@ -72,13 +72,17 @@
     blender
     megasync
     heroic
-    obs-studio
     nixd
     bat
     tree
     bottles
     sambaFull
   ];
+
+  # OBS Studio
+  programs.obs-studio = {
+    enable = true;
+  };
 
   # State version
   home.stateVersion = "23.05";
