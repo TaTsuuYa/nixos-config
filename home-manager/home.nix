@@ -77,6 +77,10 @@
     tree
     bottles
     sambaFull
+
+    yt-dlp
+    ffmpeg
+    nvtopPackages.nvidia
   ];
 
   # OBS Studio
