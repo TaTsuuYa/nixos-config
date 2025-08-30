@@ -18,6 +18,9 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "ntfs" ]; # added by me
 
+  # Ensure common sound kernel modules are loaded early so USB/HDMI audio devices appear
+  boot.kernelModules = [ "snd_usb_audio" "snd_hda_intel" ];
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -74,7 +77,7 @@
     isNormalUser = true;
     description = "TaTsuuYa";
     # I added "docker" to this array
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "audio" ];
     packages = with pkgs; [
       firefox
       #  thunderbird
