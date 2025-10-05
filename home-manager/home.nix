@@ -38,6 +38,8 @@
       gs = "git status";
       gl = "git log";
       gd = "git diff";
+      # windows
+      winboot = "sudo systemctl reboot --boot-loader-entry=windows_windows.conf";
     };
   };
 
@@ -75,12 +77,13 @@
     nixd
     bat
     tree
-    bottles
     sambaFull
-
+    spotify
     yt-dlp
     ffmpeg
     nvtopPackages.nvidia
+    piper
+    obsidian
   ];
 
   # OBS Studio

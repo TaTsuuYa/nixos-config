@@ -341,6 +341,29 @@
     ui.enable = true; # installs gui for configuring lsfg-vk
   };
 
+  # add windows boot entry
+  boot.loader.systemd-boot.windows = { 
+    "windows" =
+    let
+      # To determine the name of the windows boot drive, boot into edk2 first,
+      # (uncomment the lines bellow) then run `map -c` to get drive aliases,
+      # and try out running `FS1:`, then `ls EFI` to check which alias
+      # corresponds to which EFI partition.
+      boot-drive = "FS1";
+    in
+    {
+      title = "Windows";
+      efiDeviceHandle = boot-drive;
+      sortKey = "y_windows";
+    };
+  };
+
+  # edk2 uefi shell
+  # boot.loader.systemd-boot = {
+  #   edk2-uefi-shell.enable = true;
+  #   edk2-uefi-shell.sortKey = "z_edk2";
+  # };
+
   # copyparty
   # services.copyparty = {
   #   enable = true;
