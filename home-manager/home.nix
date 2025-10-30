@@ -19,8 +19,13 @@
   };
 
   # Shell aliases (migrated from your bash config)
-  programs.bash = {
+  programs.zsh = {
     enable = true;
+
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+
     shellAliases = {
       c = "clear";
       # Nix
@@ -40,6 +45,19 @@
       gd = "git diff";
       # windows
       winboot = "sudo systemctl reboot --boot-loader-entry=windows_windows.conf";
+    };
+
+    history.size = 10000;
+    history.ignoreAllDups = true;
+    history.path = "$HOME/.zsh_history";
+    history.ignorePatterns = ["rm *" "pkill *" "cp *"];
+
+    oh-my-zsh = {
+      enable = true;
+      plugins = [
+        "git"
+      ];
+      theme = "bira";
     };
   };
 

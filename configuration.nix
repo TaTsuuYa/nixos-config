@@ -75,6 +75,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.tatsuuya = {
     isNormalUser = true;
+    shell = pkgs.zsh;
     description = "TaTsuuYa";
     # I added "docker" to this array
     extraGroups = [ "networkmanager" "wheel" "docker" "audio" ];
@@ -83,6 +84,7 @@
       #  thunderbird
     ];
   };
+  programs.zsh.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -363,7 +365,7 @@
   #   edk2-uefi-shell.enable = true;
   #   edk2-uefi-shell.sortKey = "z_edk2";
   # };
-
+  
   # copyparty
   # services.copyparty = {
   #   enable = true;
