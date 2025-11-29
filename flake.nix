@@ -14,10 +14,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    aagl = {
+      url = "github:ezKEa/aagl-gtk-on-nix/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # copyparty.url = "github:9001/copyparty";
   };
 
-  outputs = { self, nixpkgs, home-manager, lsfg-vk-flake, /* copyparty */ }: {
+  outputs = { self, nixpkgs, home-manager, lsfg-vk-flake, aagl, /* copyparty */ }: {
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -32,6 +36,17 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.tatsuuya = import ./home-manager/home.nix;
+          }
+
+          {
+            imports = [ aagl.nixosModules.default ];
+            nix.settings = aagl.nixConfig;
+            programs.anime-game-launcher.enable = true;
+            # programs.anime-games-launcher.enable = true;
+            # programs.honkers-railway-launcher.enable = true;
+            # programs.honkers-launcher.enable = true;
+            # programs.wavey-launcher.enable = true;
+            # programs.sleepy-launcher.enable = true;
           }
           
           # load the copyparty NixOS module

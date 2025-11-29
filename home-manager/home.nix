@@ -102,6 +102,8 @@
     nvtopPackages.nvidia
     piper
     obsidian
+    brave
+    xdg-desktop-portal-gtk
   ];
 
   # OBS Studio
@@ -111,4 +113,12 @@
 
   # State version
   home.stateVersion = "23.05";
+
+  # Cachix settings
+  nix.settings = {
+    substituters = [ 
+      "https://ezkea.cachix.org" # AAGL
+    ];
+    trusted-public-keys = [ "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=" ];
+  };
 }
