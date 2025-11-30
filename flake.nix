@@ -2,10 +2,10 @@
   description = "TaTsuuYa's NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/release-25.11";
     
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -15,7 +15,7 @@
     };
 
     aagl = {
-      url = "github:ezKEa/aagl-gtk-on-nix/release-25.05";
+      url = "github:ezKEa/aagl-gtk-on-nix/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # copyparty.url = "github:9001/copyparty";
