@@ -104,6 +104,7 @@
     obsidian
     brave
     xdg-desktop-portal-gtk
+    collector
   ];
 
   # OBS Studio
@@ -118,7 +119,11 @@
   nix.settings = {
     substituters = [ 
       "https://ezkea.cachix.org" # AAGL
+      "https://cache.nixos.org/"
     ];
-    trusted-public-keys = [ "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=" ];
+    trusted-public-keys = [ 
+      "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
   };
 }
