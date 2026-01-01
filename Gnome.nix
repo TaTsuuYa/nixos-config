@@ -4,7 +4,7 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  services.xserver.desktopManager.gnome.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -28,13 +28,16 @@
     videoDrivers = ["nvidia"];
     displayManager = {
       setupCommands = ''
-        ${pkgs.xorg.xrandr}/bin/xrandr --auto
-      '';
-      # Enable the GNOME Desktop Environment.
-      gdm = {
-        enable = true;
-        wayland = true;
-      };
+      ${pkgs.xorg.xrandr}/bin/xrandr --auto
+    '';
+    };
+  };
+  
+  services.displayManager = {
+    # Enable the GNOME Desktop Environment.
+    gdm = {
+      enable = true;
+      wayland = true;
     };
   };
 }
