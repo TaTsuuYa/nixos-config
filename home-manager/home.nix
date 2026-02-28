@@ -121,6 +121,33 @@
     enable = true;
   };
 
+  # GNOME dconf settings - Map KEY_PROG1 to ROG Control Center
+  dconf.settings = {
+    "org/gnome/settings-daemon/plugins/media-keys" = {
+      custom-keybindings = ["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"];
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+      binding = "XF86Launch1";
+      command = "rog-control-center";
+      name = "ROG Control Center";
+    };
+  };
+
+  # Autostart ROG Control Center
+  systemd.user.services.rog-control-center = {
+    Unit = {
+      Description = "ROG Control Center";
+    };
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
+    Service = {
+      ExecStart = "${pkgs.asusctl}/bin/rog-control-center";
+      Restart = "on-failure";
+      RemainAfterExit = true;
+    };
+  };
+
   # State version
   home.stateVersion = "23.05";
 }
