@@ -85,7 +85,7 @@
     git
     wget
     vscode
-    gnome-tweaks  # Updated to use top-level package
+    gnome-tweaks
     toybox
     ripgrep
     xclip
@@ -103,10 +103,18 @@
     nvtopPackages.nvidia
     piper
     obsidian
-    brave
     xdg-desktop-portal-gtk
     collector
   ];
+
+  # Brave configuration
+  programs.chromium = {
+    enable = true;
+    package = pkgs.brave;
+    # commandLineArgs = [
+    #   "--use-angle=vulkan"
+    # ];
+  };
 
   # OBS Studio
   programs.obs-studio = {
