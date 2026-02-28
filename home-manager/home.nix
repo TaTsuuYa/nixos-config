@@ -77,7 +77,7 @@
   # Packages to install for your user
   home.packages = with pkgs; [
     firefox
-    neofetch
+    fastfetch
     vlc
     discord
     google-chrome
