@@ -19,9 +19,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # copyparty.url = "github:9001/copyparty";
+
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, lsfg-vk-flake, aagl, /* copyparty */ }: {
+  outputs = { self, nixpkgs, home-manager, lsfg-vk-flake, aagl, nix-index-database /* copyparty */ }: {
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -29,6 +34,9 @@
           ./configuration.nix
           ./hardware-configuration.nix
           ./Gnome.nix
+          
+          nix-index-database.nixosModules.default
+
           lsfg-vk-flake.nixosModules.default
           
           home-manager.nixosModules.home-manager
@@ -42,7 +50,7 @@
             imports = [ aagl.nixosModules.default ];
             nix.settings = aagl.nixConfig;
             programs.anime-game-launcher.enable = true;
-            # programs.anime-games-launcher.enable = true;
+            programs.anime-games-launcher.enable = true;
             # programs.honkers-railway-launcher.enable = true;
             # programs.honkers-launcher.enable = true;
             # programs.wavey-launcher.enable = true;

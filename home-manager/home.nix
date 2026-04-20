@@ -27,6 +27,10 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
+    initContent = ''
+      source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
+    '';
+
     shellAliases = {
       c = "clear";
       # Nix
@@ -105,15 +109,16 @@
     obsidian
     xdg-desktop-portal-gtk
     collector
+    nix-init
   ];
 
   # Brave configuration
   programs.chromium = {
     enable = true;
     package = pkgs.brave;
-    # commandLineArgs = [
-    #   "--use-angle=vulkan"
-    # ];
+    commandLineArgs = [
+      "--use-angle=vulkan"
+    ];
   };
 
   # OBS Studio
