@@ -27,10 +27,6 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
-    initContent = ''
-      source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
-    '';
-
     shellAliases = {
       c = "clear";
       # Nix
