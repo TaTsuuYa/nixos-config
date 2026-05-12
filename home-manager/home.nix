@@ -76,29 +76,23 @@
 
   # Packages to install for your user
   home.packages = with pkgs; [
-    firefox
     fastfetch
     vlc
     discord
-    google-chrome
     python3
     git
     wget
     vscode
     gnome-tweaks
     toybox
-    ripgrep
-    xclip
+    # ripgrep
+    # xclip
     qbittorrent
-    blender
-    megasync
-    heroic
-    nixd
     bat
     tree
-    sambaFull
+    # sambaFull
     spotify
-    yt-dlp
+    # yt-dlp
     ffmpeg
     nvtopPackages.nvidia
     piper
@@ -106,6 +100,11 @@
     xdg-desktop-portal-gtk
     collector
     nix-init
+    # krita
+    # vmware-workstation
+    jq
+    libnotify
+    pulseaudio
   ];
 
   # Brave configuration
