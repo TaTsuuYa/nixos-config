@@ -148,6 +148,18 @@
     };
   };
 
+  # Autostart anime-game-launcher
+  xdg.configFile."autostart/anime-game-launcher.desktop" = {
+    text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=Anime Game Launcher
+    Exec=${pkgs.anime-game-launcher}/bin/anime-game-launcher
+    X-GNOME-Autostart-enabled=true
+    '';
+    force = true;
+  };
+
   # State version
   home.stateVersion = "23.05";
 }
