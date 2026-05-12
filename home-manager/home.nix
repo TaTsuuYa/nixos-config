@@ -1,4 +1,12 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+let
+  subsplease-notif = pkgs.writeShellApplication {
+    name = "subsplease-notif";
+    runtimeInputs = with pkgs; [ curl ffmpeg jq libnotify pulseaudio wget ];
+    text = builtins.readFile ../scripts/subsplease-notif;
+  };
+in
+{
   home.username = "tatsuuya";
   home.homeDirectory = "/home/tatsuuya";
 
@@ -102,9 +110,6 @@
     nix-init
     # krita
     # vmware-workstation
-    jq
-    libnotify
-    pulseaudio
   ];
 
   # Brave configuration
@@ -145,6 +150,25 @@
       ExecStart = "${pkgs.asusctl}/bin/rog-control-center";
       Restart = "on-failure";
       RemainAfterExit = true;
+    };
+  };
+
+  # Autostart subsplease-notif
+  systemd.user.services.subsplease-notif = {
+    Unit = {
+      Description = "Subsplease Notification Service";
+      After = [ "graphical-session-pre.target" ];
+      PartOf = [ "graphical-session.target" ];
+    };
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
+    Service = {
+      ExecStart = "${subsplease-notif}/bin/subsplease-notif";
+      Restart = "on-failure";
+      RestartSec = 5;
+      StandardOutput = "journal";
+      StandardError = "journal";
     };
   };
 

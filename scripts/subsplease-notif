@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+
+DIR="$HOME/.config/subsplease"
+ICON="$DIR/icon.ico"
+HISTORY="$DIR/history.json"
+API="https://subsplease.org/api/?f=latest&tz=Africa/Casablanca"
+FAVICO="https://subsplease.org/favicon.ico"
+LOGFILE="$DIR/subsplease.log"
+SOUND_DIR="$DIR/sound.wav"
+
+# Initialize necessary files and directories
+initialize() {
+    mkdir -p "$DIR"
+    if [[ ! -f $HISTORY ]]; then
+        printf '[]' > "$HISTORY"
+    fi
+    if [[ ! -f $ICON ]]; then
+        wget -q -O "$ICON" "$FAVICO"
+    fi
+    ffmpeg -hide_banner -loglevel error -y \
+        -f lavfi -i "sine=frequency=880:duration=1" \
+        -f lavfi -i "sine=frequency=1320:duration=1" \
+        -filter_complex "[0:a][1:a]amix=inputs=2:normalize=0,volume=1,afade=t=in:st=0:d=0.015,afade=t=out:st=0.34:d=0.30" \
+        -c:a pcm_s16le "$SOUND_DIR"
+}
+
+# Fetch the latest episodes from the API
+fetch_latest_episodes() {
+    local response
+    if ! response=$(curl -s -X GET "$API"); then
+        printf "Failed to fetch data from API\n" >&2
+        return 1
+    fi
+    printf "%s" "$response"
+}
+
+# Get unwatched episodes
+get_unwatched_episodes() {
+    local new_episodes watched_episodes json_input
+    new_episodes=$(echo "$1" | jq 'keys_unsorted')
+    watched_episodes=$(jq '.' "$HISTORY")
+    json_input=$(jq -n --argjson new "$new_episodes" --argjson old "$watched_episodes" '{ new: $new, old: $old }')
+    echo "$json_input" | jq '.new - .old'
+}
+
+# Send notification for each unwatched episode
+send_notifications() {
+    local unwatched_episodes="$1"
+    local sound_played=false
+
+    echo "$unwatched_episodes" | jq -r '.[]' | while read -r ep; do
+        notify-send "New Episode" "$ep" --app-name "SubsPlease" --icon="$ICON"
+        echo "Sent notification for episode: $ep" >> "$LOGFILE"
+
+        if [ "$sound_played" = false ]; then
+            paplay "$SOUND_DIR"
+            sound_played=true
+        fi
+
+        sleep 1
+    done
+}
+
+# Update history file with new episodes
+update_history() {
+    echo "$1" > "$HISTORY"
+}
+
+main() {
+    initialize
+
+    while true; do
+        local response new_episodes unwatched_episodes
+        if ! response=$(fetch_latest_episodes); then
+            printf "Failed to fetch latest episodes\n" >> "$LOGFILE"
+            sleep 60
+            continue
+        fi
+
+        if ! new_episodes=$(echo "$response" | jq 'keys_unsorted'); then
+            printf "Failed to parse new episodes\n" >> "$LOGFILE"
+            sleep 60
+            continue
+        fi
+
+        if ! unwatched_episodes=$(get_unwatched_episodes "$response"); then
+            printf "Failed to get unwatched episodes\n" >> "$LOGFILE"
+            sleep 60
+            continue
+        fi
+
+        send_notifications "$unwatched_episodes"
+        update_history "$new_episodes"
+        sleep 60
+    done
+}
+
+main "$@"
