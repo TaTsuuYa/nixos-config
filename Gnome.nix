@@ -35,9 +35,6 @@
   
   services.displayManager = {
     # Enable the GNOME Desktop Environment.
-    gdm = {
-      enable = true;
-      wayland = true;
-    };
+    gdm.enable = true;
   };
 }

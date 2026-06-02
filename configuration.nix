@@ -259,7 +259,7 @@
   hardware.bluetooth.package = pkgs.bluez;
 
   # for docker
-  virtualisation.docker.enable = true;
+  # virtualisation.docker.enable = true;
 
   # ASUS stuff
   services.supergfxd.enable = true;
@@ -297,7 +297,10 @@
   };
 
   # ollama
-  services.ollama = { enable = true; acceleration = "cuda"; };
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-cuda;
+  };
 
   # Fix game latency
   # networking.interfaces.eno2.tc.qdisc = "fq_codel";
@@ -377,19 +380,18 @@
       sortKey = "y_windows";
     };
   };
-
-  # auto garbage collection
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than +5";
-  };
-
   # edk2 uefi shell
   # boot.loader.systemd-boot = {
   #   edk2-uefi-shell.enable = true;
   #   edk2-uefi-shell.sortKey = "z_edk2";
   # };
+
+  # auto garbage collection
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
   
   # copyparty
   # services.copyparty = {
