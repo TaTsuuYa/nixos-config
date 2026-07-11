@@ -18,6 +18,7 @@ in
 
   # Git configuration
   programs.git = {
+    lfs.enable = true;
     enable = true;
     settings.user = {
       name = "TaTsuuYa";
@@ -108,8 +109,8 @@ in
     xdg-desktop-portal-gtk
     collector
     nix-init
-    # krita
-    # vmware-workstation
+    krita
+    gamemode
   ];
 
   # Brave configuration

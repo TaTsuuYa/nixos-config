@@ -109,6 +109,7 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     steam
     steam-run
+    # vmware-workstation
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -144,6 +145,7 @@
     "steam-original"
     "steam-run"
     "discord"
+    # "vmware-workstation"
 
     # ollama
     "cuda_cccl"
@@ -214,7 +216,6 @@
         enable = true;
         enableOffloadCmd = true;
       };
-      # These are more reliable default values for laptops
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
     };
@@ -257,43 +258,18 @@
   # for dual-shock 4
   hardware.bluetooth.enable = true;
   hardware.bluetooth.package = pkgs.bluez;
+  
+  # VMware Workstation
+  # virtualisation.vmware.host.enable = true;
+  # virtualisation.vmware.host.package = pkgs.vmware-workstation;
 
   # for docker
-  # virtualisation.docker.enable = true;
+  virtualisation.docker.enable = true;
 
   # ASUS stuff
-  services.supergfxd.enable = true;
+  # services.supergfxd.enable = true;
   services.asusd = {
     enable = true;
-    enableUserService = true;
-  };
-
-  # bash aliases
-  programs.bash = {
-    shellAliases = {
-      # default
-      c = "clear";
-
-      # Nix
-      nx-conf = "code /etc/nixos/configuration.nix";
-      nx-rb-switch = "sudo nixos-rebuild switch";
-      nx-rb-switch-up = "sudo nixos-rebuild switch --upgrade";
-      nx-rb-boot = "sudo nixos-rebuild boot";
-      nx-rb-boot-up = "sudo nixos-rebuild boot --upgrade";
-
-      # Git
-      ginit = "git init";
-      gadd = "git add";
-      gcomm = "git commit";
-      gpll = " git pull";
-      gpsh = "git push";
-      gs = "git status";
-    };
-  };
-
-  # set git settings
-  programs.git.config = {
-    init.defaultBranch = "main"; # default branch: main
   };
 
   # ollama
