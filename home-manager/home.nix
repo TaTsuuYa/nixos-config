@@ -154,25 +154,6 @@ in
     };
   };
 
-  # Autostart subsplease-notif
-  systemd.user.services.subsplease-notif = {
-    Unit = {
-      Description = "Subsplease Notification Service";
-      After = [ "graphical-session-pre.target" ];
-      PartOf = [ "graphical-session.target" ];
-    };
-    Install = {
-      WantedBy = [ "graphical-session.target" ];
-    };
-    Service = {
-      ExecStart = "${subsplease-notif}/bin/subsplease-notif";
-      Restart = "on-failure";
-      RestartSec = 5;
-      StandardOutput = "journal";
-      StandardError = "journal";
-    };
-  };
-
   # Autostart anime-game-launcher
   xdg.configFile."autostart/anime-game-launcher.desktop" = {
     text = ''

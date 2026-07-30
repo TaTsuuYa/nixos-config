@@ -1,0 +1,27 @@
+id = "subsplease"
+endpoint = "https://subsplease.org/api/"
+method = "GET"
+interval = "1m"
+query = { f = "latest", tz = "Africa/Casablanca" }
+icon = "https://subsplease.org/favicon.ico"
+
+items = ".[]"
+variants = ".downloads[]"
+
+[fields]
+series   = { path = ".show" }
+episode  = { path = ".episode", default = "?" }
+cover    = { path = ".image_url", prefix = "https://subsplease.org" }
+show_url = { path = ".page", prefix = "https://subsplease.org/shows/", suffix = "/" }
+id       = { path = ".page" }
+
+[fields.variant]
+resolution = { path = ".res", regex = "(\\d+)", default = "1080" }
+method     = { default = "magnet" }
+link       = { path = ".magnet" }
+
+[batch]
+regex = "^\\d+\\s*-\\s*\\d+$"
+
+[version]
+regex = "^(?P<episode>\\d+)v(?P<version>\\d+)$"
