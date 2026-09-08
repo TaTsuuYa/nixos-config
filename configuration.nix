@@ -34,7 +34,7 @@
   boot.supportedFilesystems = [ "ntfs" ]; # added by me
 
   # Ensure common sound kernel modules are loaded early so USB/HDMI audio devices appear
-  boot.kernelModules = [ "snd_usb_audio" "snd_hda_intel" ];
+  boot.kernelModules = [ "snd_usb_audio" "snd_hda_intel" "nvidia" "nvidia_modeset" "nvidia_drm" ];
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -45,6 +45,8 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  # disable waiting for network connection to speedup boot time
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   # Set your time zone.
   time.timeZone = "Africa/Casablanca";

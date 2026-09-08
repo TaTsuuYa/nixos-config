@@ -117,9 +117,9 @@ in
   programs.chromium = {
     enable = true;
     package = pkgs.brave;
-    commandLineArgs = [
-      "--use-angle=vulkan"
-    ];
+    # commandLineArgs = [
+    #   "--use-angle=vulkan"
+    # ];
   };
 
   # OBS Studio
