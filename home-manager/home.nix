@@ -127,6 +127,38 @@ in
     enable = true;
   };
 
+  programs.mpv = {
+    enable = true;
+    config = {
+      screenshot-directory = "~/Pictures/mpv";
+      screenshot-template = "%tY.%tm.%td-%tH.%tM-%F-%04n";
+      screenshot-format = "png";
+
+      osd-status-msg = "\${media-title}\\n\${time-pos} / \${duration} (-\${playtime-remaining})";
+
+    };
+
+    scriptOpts.osc = {
+      visibility = "always";
+      boxvideo = "yes";
+      showwindowed = "yes";
+      showfullscreen = "no";
+    };
+
+    bindings = {
+      "[" = "add speed -0.1";
+      "]" = "add speed  0.1";
+      "{" = "add speed -0.5";
+      "}" = "add speed  0.5";
+
+      "RIGHT" = "seek   5; show-progress";
+      "LEFT"  = "seek -10; show-progress";
+
+      "\\" = "seek  80";
+      "|"  = "seek -40";
+    };
+  };
+
   # GNOME dconf settings - Map KEY_PROG1 to ROG Control Center
   dconf.settings = {
     "org/gnome/settings-daemon/plugins/media-keys" = {
