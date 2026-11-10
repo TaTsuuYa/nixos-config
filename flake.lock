@@ -47,6 +47,23 @@
         "type": "github"
       }
     },
+    "craft-launcher-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793554123,
+        "narHash": "sha256-Tp/lwmxhwSD6uGelTzY+El0aTyYBdEq3za9hKKRA0qs=",
+        "owner": "storytold",
+        "repo": "craft-launcher",
+        "rev": "ec205366ebe42635e155b9ab246f036052fef406",
+        "type": "github"
+      },
+      "original": {
+        "owner": "storytold",
+        "ref": "release",
+        "repo": "craft-launcher",
+        "type": "github"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1784564969,
@@ -199,6 +216,7 @@
       "inputs": {
         "aagl": "aagl",
         "anime-notif": "anime-notif",
+        "craft-launcher-src": "craft-launcher-src",
         "home-manager": "home-manager_2",
         "lsfg-vk-flake": "lsfg-vk-flake",
         "nix-index-database": "nix-index-database",

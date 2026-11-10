@@ -342,6 +342,12 @@
     ui.enable = true; # installs gui for configuring lsfg-vk
   };
 
+  # enable app images
+  programs.appimage = { 
+    enable = true; 
+    binfmt = true; 
+  };
+
   # add windows boot entry
   boot.loader.systemd-boot.windows = { 
     "windows" =

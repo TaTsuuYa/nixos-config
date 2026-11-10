@@ -29,9 +29,14 @@
       url = "github:TaTsuuYa/anime-notif";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    craft-launcher-src = {
+      url = "github:storytold/craft-launcher/release";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, lsfg-vk-flake, aagl, nix-index-database, anime-notif /* copyparty */ }: {
+  outputs = { self, nixpkgs, home-manager, lsfg-vk-flake, aagl, nix-index-database, anime-notif, craft-launcher-src /* copyparty */ }: {
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -43,6 +48,15 @@
           nix-index-database.nixosModules.default
 
           lsfg-vk-flake.nixosModules.default
+
+          ({ pkgs, ... }: {
+            environment.systemPackages = [
+              (pkgs.callPackage ./pkgs/artcraft-launcher-appimage.nix { })
+              pkgs.gnomeExtensions.appindicator
+            ];
+
+            programs.appimage = { enable = true; binfmt = true; };
+          })
           
           home-manager.nixosModules.home-manager
           {
